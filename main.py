@@ -22,6 +22,7 @@ def main():
     if len(lines) >= 1:
         print(lines[-1])
         index = lines.index(lines[-1])+1
+        print(index)
     else:
         pass
 
