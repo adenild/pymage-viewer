@@ -4,6 +4,8 @@ import os
 
 
 def main():
+    file_name = input("Qual vai ser o nome do arquivo? ")
+
     # Define a janela do Tkinter
     window = Tk()
     window.title('Não é o Labelme')
@@ -15,8 +17,16 @@ def main():
             pass
         else:
             images.append(file)
+    lines = open(f"outputs/{file_name}", 'r').readlines()
     index = 0
-    print(f"Existem {len(images)} imagens.")
+    if len(lines) >= 1:
+        print(lines[-1])
+        index = lines.index(lines[-1])+1
+    else:
+        pass
+
+    total_images = len(images)
+    print(f"Existem {total_images} imagens.")
 
     # Salva a imagem no Tk
     im = Image.open(f"images/{images[index]}")
@@ -37,6 +47,17 @@ def main():
         nonlocal im
         nonlocal ph
 
+        # Informa a posição atual
+        print(f"[{index+1}/{total_images}]")
+
+        # Salva no arquivo o texto digitado
+        label_file = open(f'outputs/{file_name}', 'a+')
+        label_file.write(f"{images[index]},None,{input_box.get()}\n")
+        input_box.delete(0, 'end')
+        print(f"Você digitou {input_box.get()} no arquivo {images[index]}")
+        label_file.close()
+
+        # Avança na lista
         index += 1
 
         # Reseta a janela e coloca a imagem nova
@@ -47,9 +68,6 @@ def main():
         label = Label(image=ph)
         label.image = ph
         label.grid(row=0, column=0, columnspan=3)
-
-        # Pega o texto da imagem
-        print(input_box.get())
 
     # Declaração da caixa de texto
     input_box = Entry(window, width=100)
