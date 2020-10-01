@@ -9,8 +9,14 @@ def main():
     window.title('Não é o Labelme')
 
     # Pega a lista das imagens
-    images = os.listdir('images/')
+    images = []
+    for file in os.listdir('images/'):
+        if '.txt' in file:
+            pass
+        else:
+            images.append(file)
     index = 0
+    print(f"Existem {len(images)} imagens.")
 
     # Salva a imagem no Tk
     im = Image.open(f"images/{images[index]}")
