@@ -61,7 +61,7 @@ def main():
     input_box.grid(row=1, column=0)
 
     button_next = Button(window, text="Próximo", command=next_image)
-    button_next.grid(row=1, column=1)
+    button_next.grid(row=1, column=2)
 
     window.mainloop()
 
