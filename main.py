@@ -32,7 +32,7 @@ def save_data_json(data,file_name):
     with open(f"outputs/{file_name}", "w") as write_file:
         json.dump(data, write_file,indent=1)
 
-def starter_list(data,images):
+def separe_done(data,images):
     removidas = []
     for key in data.keys():
         if key in images:
@@ -42,20 +42,29 @@ def starter_list(data,images):
     print(f'{len(removidas)} imagens ja foram detectadas no arquivo de entrada.')
     return images,removidas
 
+def check_labeled(img_name,file_dict):
+    if file_dict[img_name]['label'] == '':
+        return ''
+    else:
+        return file_dict[img_name]['label']
+
+
 def main():
-    # Define a janela do Tkinter
-    window = Tk()
-    window.title('Não é o Labelme')
 
     file_name = input("Qual vai ser o nome do arquivo? ")
     images = image_loader()
+
+    # Define a janela do Tkinter
+    window = Tk()
+    window.title('Não é o Labelme')
 
     # Verificar se o arquivo existe e carrega os dados, se não existir ele cria.
     data = read_previous_data(file_name)
 
     print(data)
-
-    images,removidas = starter_list(data,images)
+    print(images)
+    images,removidas = separe_done(data,images)
+    images = images+removidas
     if len(images) == 0:
         print('Todas as imagens do diretório /images ja estão transcritas')
         exit(200)
@@ -93,6 +102,7 @@ def main():
         # Salva no arquivo o texto digitado        
         save_data_json(data,file_name)
 
+        # TODO: aqui não deveria encerrar o programa, apenas desabilitar o botão de next.
         if (index+1==total_images):
             print('Finalizadas as imagens')
             exit(200)
@@ -115,16 +125,68 @@ def main():
         label.image = ph
         label.grid(row=0, column=0, columnspan=3)
 
-        
+        # Se label ja existir, escreve no Entry point.
+        label_text = check_labeled(images[index],data)
+        input_box.insert(0,label_text)
 
+        
+    def previous_image():
+        nonlocal index
+        nonlocal label
+        nonlocal im
+        nonlocal ph
+
+        # Informa a posição atual
+        print(f"[{index}/{total_images}]")
+
+        info = {images[index]:{'treco':None,'label':input_box.get()}}
+        data.update(info)
+        print(data)
+
+        # Salva no arquivo o texto digitado        
+        save_data_json(data,file_name)
+
+        # TODO: aqui não deveria encerrar o programa, apenas desabilitar o botão de next.
+        if (index==0):
+            print('Finalizadas as imagens')
+            exit(200)
+
+        # label_file = open(f'outputs/{file_name}', 'a+')
+        # label_file.write(f"{images[index]},None,{input_box.get()}\n")
+        input_box.delete(0, 'end')
+        # print(f"Você digitou {input_box.get()} no arquivo {images[index]}")
+        # label_file.close()
+
+        # Avança na lista
+        index -= 1
+
+        # Reseta a janela e coloca a imagem nova
+        label.grid_forget()
+        im = Image.open(f"images/{images[index]}")
+        im.thumbnail((800, 600))
+        ph = ImageTk.PhotoImage(im)
+        label = Label(image=ph)
+        label.image = ph
+        label.grid(row=0, column=0, columnspan=3)
+
+        # Se label ja existir, escreve no Entry point.
+        label_text = check_labeled(images[index],data)
+        input_box.insert(0,label_text)
+
+        pass
 
     # Declaração da caixa de texto
     input_box = Entry(window, width=100)
-    input_box.grid(row=1, column=0)
+    label_text = check_labeled(images[index],data)
+    input_box.insert(0,label_text)
+    input_box.grid(row=1, column=1)
+    
 
     # Declaração do botão
+    button_prev = Button(window, text="Anterior", command=previous_image)
+    button_prev.grid(row=1,column=0)
     button_next = Button(window, text="Próximo", command=next_image)
-    button_next.grid(row=1, column=1)
+    button_next.grid(row=1, column=2)
 
     window.mainloop()
 
