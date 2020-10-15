@@ -13,7 +13,7 @@ def select_output_file(debug=False):
 
 def select_images_dir(debug=False):
     if debug:
-        return "images"
+        return "images/placa"
     return filedialog.askdirectory()
 
 
@@ -32,11 +32,7 @@ def image_loader(images_dir):
     return images
 
 
-def check_labels():
-    pass
-
-
-def read_previous_data(file):
+def load_data(file, images_list):
     try:
         with open(f"{file}", "r") as read_file:
             data = json.load(read_file)
@@ -51,16 +47,15 @@ def save_data_json(file, data):
         json.dump(data, write_file, indent=1)
 
 
-# TODO: Refazer com uma só lista permitindo ir e voltar
-def starter_list(data, images):
-    removidas = []
+# TODO: Encontrar um novo nome pra função
+def starter_list(data):
+    labeled_files = []
     for key in data.keys():
-        if key in images:
-            removidas.append(key)
-            images.remove(key)
+        if len(data[key]["label"]) > 0:
+            labeled_files.append(key)
 
-    print(f'{len(removidas)} imagens ja foram detectadas no arquivo de entrada.')
-    return images, removidas
+    print(f'{len(labeled_files)} imagens ja foram detectadas no arquivo de entrada.')
+    return labeled_files
 
 
 def setup_image(images_dir, list_position):
@@ -71,3 +66,13 @@ def setup_image(images_dir, list_position):
 
 def show_position(actual, total):
     return f"[{actual+1}/{total}]"
+
+
+def check_labeled(image, data_file):
+    try:
+        if data_file[image]['label'] == '':
+            return ''
+        else:
+            return data_file[image]['label']
+    except:
+        return ''
