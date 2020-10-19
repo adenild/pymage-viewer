@@ -12,8 +12,8 @@ def main():
     window = Tk()
     window.title('Não é o Labelme')
     system_font = font.Font(size=16)
-    file = side.select_output_file(True)
-    images_dir = side.select_images_dir(True)
+    file = side.select_output_file()
+    images_dir = side.select_images_dir()
 
     images = side.image_loader(images_dir)
     data = side.load_data(file, images)
