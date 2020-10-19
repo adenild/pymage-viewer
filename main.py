@@ -1,82 +1,84 @@
 from tkinter import *
-from PIL import ImageTk, Image
-import os
+import tkinter.font as font
+import side as side
 
 
+# TODO: Adicionar hotkeys de passar e voltas
+# TODO: Criar linha para menus de contexo e icones
+# TODO: Criar os botões para tipos de lista
+# TODO: Criar botão de salvar
+# TODO: Adicionar campo de ir até x imagem
 def main():
-    file_name = input("Qual vai ser o nome do arquivo? ")
-
-    # Define a janela do Tkinter
     window = Tk()
     window.title('Não é o Labelme')
+    system_font = font.Font(size=16)
+    file = side.select_output_file()
+    images_dir = side.select_images_dir()
 
-    # Pega a lista das imagens
-    images = []
-    for file in os.listdir('images/'):
-        if '.txt' in file:
-            pass
-        else:
-            images.append(file)
-    lines = open(f"outputs/{file_name}", 'r').readlines()
-    index = 0
-    if len(lines) >= 1:
-        print(lines[-1])
-        index = lines.index(lines[-1])+1
-        print(index)
-    else:
-        pass
+    images = side.image_loader(images_dir)
+    data = side.load_data(file, images)
 
+    labeled_files = side.starter_list(data)
     total_images = len(images)
-    print(f"Existem {total_images} imagens.")
+    index = 0
 
-    # Salva a imagem no Tk
-    im = Image.open(f"images/{images[index]}")
-    im.thumbnail((800, 600))
-    ph = ImageTk.PhotoImage(im)
+    if total_images == 0:
+        print('Todas as imagens da pasta ja receberam labels')
+        exit(200)
+    else:
+        print(f"Existem {total_images} imagens.")
 
-    # Exibe a imagem no Tk
-    label = Label(image=ph)
-    label.image = ph
+    image = side.setup_image(images_dir, images[index])
+    label = Label(image=image)
+    label.image = image
     label.grid(row=0, column=0, columnspan=3)
 
-    # Muda pra próxima imagem e salva o texto
-    # TODO: Consertar o final do loop. Ta travando o programa
     # TODO: Fazer a validação dos dados
-    def next_image():
+    def change_image(next_or_prev: str):
         nonlocal index
         nonlocal label
-        nonlocal im
-        nonlocal ph
+        nonlocal image
 
-        # Informa a posição atual
-        print(f"[{index+1}/{total_images}]")
+        print(side.show_position(index, total_images))
 
-        # Salva no arquivo o texto digitado
-        label_file = open(f'outputs/{file_name}', 'a+')
-        label_file.write(f"{images[index]},None,{input_box.get()}\n")
+        save = {images[index]: {'bbox': "None", 'label': input_box.get().upper()}}
+        data.update(save)
+        print(save)
+        side.save_data_json(file, data)
+
+        if next_or_prev == "next":
+            if index + 1 == total_images:
+                print('Fim das imagens.')
+                exit(200)
+            else:
+                index += 1
+        elif next_or_prev == "prev":
+            if index - 1 < 0:
+                print("Não existem imagens antes dessa")
+                exit(200)
+            else:
+                index -= 1
+
         input_box.delete(0, 'end')
-        print(f"Você digitou {input_box.get()} no arquivo {images[index]}")
-        label_file.close()
-
-        # Avança na lista
-        index += 1
-
-        # Reseta a janela e coloca a imagem nova
+        label_text = side.check_labeled(images[index], data)
+        input_box.insert(0, label_text)
         label.grid_forget()
-        im = Image.open(f"images/{images[index]}")
-        im.thumbnail((800, 600))
-        ph = ImageTk.PhotoImage(im)
-        label = Label(image=ph)
-        label.image = ph
+
+        image = side.setup_image(images_dir, images[index])
+        label = Label(image=image)
+        label.image = image
         label.grid(row=0, column=0, columnspan=3)
 
-    # Declaração da caixa de texto
-    input_box = Entry(window, width=100)
+    input_box = Entry(window, width=60)
+    input_box["font"] = system_font
     input_box.grid(row=1, column=0)
+    label_text = side.check_labeled(images[index], data)
+    input_box.insert(0, label_text)
 
-    # Declaração do botão
-    button_next = Button(window, text="Próximo", command=next_image)
-    button_next.grid(row=1, column=1)
+    button_prev = Button(window, text="Anterior", command=lambda next_or_prev="prev": change_image(next_or_prev))
+    button_prev.grid(row=1, column=2)
+    button_next = Button(window, text="Próximo", command=lambda next_or_prev="next": change_image(next_or_prev))
+    button_next.grid(row=1, column=3)
 
     window.mainloop()
 
