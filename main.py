@@ -3,8 +3,8 @@ import tkinter.font as font
 import side as side
 
 
+# TODO: Passar todas as funções pra outro arquivo
 # TODO: Adicionar hotkeys de passar e voltas
-# TODO: Criar linha para menus de contexo e icones
 # TODO: Criar os botões para tipos de lista
 # TODO: Criar botão de salvar
 # TODO: Adicionar campo de ir até x imagem

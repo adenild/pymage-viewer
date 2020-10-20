@@ -77,24 +77,26 @@ def check_labeled(image, data_file):
     except:
         return ''
 
+
 def generate_menubar(window):
-    menubar = Menu(window)
+    menu_bar = Menu(window)
 
     # create a dropdown menu.
-    filemenu = Menu(menubar, tearoff=0)
-    filemenu.add_command(label="Open",command=test_clicked_button)
-    filemenu.add_command(label="Save",command=test_clicked_button)
-    filemenu.add_separator()
-    filemenu.add_command(label="Exit", command=window.quit)
-    menubar.add_cascade(label="File", menu=filemenu)
+    file_menu = Menu(menu_bar, tearoff=0)
+    file_menu.add_command(label="Open", command=test_clicked_button)
+    file_menu.add_command(label="Save", command=test_clicked_button)
+    file_menu.add_separator()
+    file_menu.add_command(label="Exit", command=window.quit)
+    menu_bar.add_cascade(label="File", menu=file_menu)
 
-    labelmenu = Menu(menubar, tearoff=0)
-    labelmenu.add_command(label="All Images", command=test_clicked_button)
-    labelmenu.add_command(label="Labelled", command=test_clicked_button)
-    labelmenu.add_command(label="Not Labelled", command=test_clicked_button)
-    menubar.add_cascade(label="Edit", menu=labelmenu)
+    label_menu = Menu(menu_bar, tearoff=0)
+    label_menu.add_command(label="All Images", command=test_clicked_button)
+    label_menu.add_command(label="Labelled", command=test_clicked_button)
+    label_menu.add_command(label="Not Labelled", command=test_clicked_button)
+    menu_bar.add_cascade(label="Edit", menu=label_menu)
 
-    window.config(menu=menubar)
+    window.config(menu=menu_bar)
+
 
 def test_clicked_button():
     print('This button was clicked')
