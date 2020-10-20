@@ -28,6 +28,8 @@ def main():
     else:
         print(f"Existem {total_images} imagens.")
 
+    side.generate_menubar(window)
+
     image = side.setup_image(images_dir, images[index])
     label = Label(image=image)
     label.image = image

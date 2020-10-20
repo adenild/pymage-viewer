@@ -76,3 +76,25 @@ def check_labeled(image, data_file):
             return data_file[image]['label']
     except:
         return ''
+
+def generate_menubar(window):
+    menubar = Menu(window)
+
+    # create a dropdown menu.
+    filemenu = Menu(menubar, tearoff=0)
+    filemenu.add_command(label="Open",command=test_clicked_button)
+    filemenu.add_command(label="Save",command=test_clicked_button)
+    filemenu.add_separator()
+    filemenu.add_command(label="Exit", command=window.quit)
+    menubar.add_cascade(label="File", menu=filemenu)
+
+    labelmenu = Menu(menubar, tearoff=0)
+    labelmenu.add_command(label="All Images", command=test_clicked_button)
+    labelmenu.add_command(label="Labelled", command=test_clicked_button)
+    labelmenu.add_command(label="Not Labelled", command=test_clicked_button)
+    menubar.add_cascade(label="Edit", menu=labelmenu)
+
+    window.config(menu=menubar)
+
+def test_clicked_button():
+    print('This button was clicked')
