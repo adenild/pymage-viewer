@@ -1,6 +1,6 @@
 import json
 
-file = open("debug/gante.txt", "r", encoding="utf8")
+file = open("debug/adenildo.txt", "r", encoding="utf8")
 new_file = open(input("Digite o arquivo de saída (.json): "), "w+")
 
 lines_list = file.readlines()
@@ -17,12 +17,9 @@ for line in lines_list:
             "label": line[2]
         }
         print(line)
-        json.dump(result_dict, new_file, indent=1)
     except:
         errors += 1
     cont += 1
 print(f"{errors} linhas erradas")
-
-
-
+json.dump(result_dict, new_file, indent=1)
 new_file.close()
