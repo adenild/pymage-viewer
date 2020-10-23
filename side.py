@@ -32,7 +32,8 @@ def image_loader(images_dir):
     return images
 
 
-def load_data(file, images_list):
+def load_data(file, images_list=None):
+    print("Carreguei")
     try:
         with open(f"{file}", "r") as read_file:
             data = json.load(read_file)
@@ -76,27 +77,3 @@ def check_labeled(image, data_file):
             return data_file[image]['label']
     except:
         return ''
-
-
-def generate_menubar(window):
-    menu_bar = Menu(window)
-
-    # create a dropdown menu.
-    file_menu = Menu(menu_bar, tearoff=0)
-    file_menu.add_command(label="Open", command=test_clicked_button)
-    file_menu.add_command(label="Save", command=test_clicked_button)
-    file_menu.add_separator()
-    file_menu.add_command(label="Exit", command=window.quit)
-    menu_bar.add_cascade(label="File", menu=file_menu)
-
-    label_menu = Menu(menu_bar, tearoff=0)
-    label_menu.add_command(label="All Images", command=test_clicked_button)
-    label_menu.add_command(label="Labelled", command=test_clicked_button)
-    label_menu.add_command(label="Not Labelled", command=test_clicked_button)
-    menu_bar.add_cascade(label="Edit", menu=label_menu)
-
-    window.config(menu=menu_bar)
-
-
-def test_clicked_button():
-    print('This button was clicked')
