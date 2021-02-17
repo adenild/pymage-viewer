@@ -32,12 +32,12 @@ def main():
     input_box = Entry(window, width=60)
     input_box["font"] = system_font
     input_box.grid(row=1, column=0)
-    label_text = side.check_labeled(images[index], data)
-    input_box.insert(0, label_text)
+    input_box.insert(0, side.check_labeled(images[index], data))
+
     local_vars = [index, label, image, total_images, input_box, images, data, file, images_dir]
-    button_prev = Button(window, text="Anterior", command=lambda next_or_prev="prev", local_vars=local_vars: commands.change_image(next_or_prev, local_vars))
+    button_prev = Button(window, text="Anterior", command=lambda: commands.change_image("prev", local_vars))
     button_prev.grid(row=1, column=2)
-    button_next = Button(window, text="Próximo", command=lambda next_or_prev="next", local_vars=local_vars: commands.change_image(next_or_prev, local_vars))
+    button_next = Button(window, text="Próximo", command=lambda: commands.change_image("next", local_vars))
     button_next.grid(row=1, column=3)
 
     widgets.generate_menubar(window, local_vars)
