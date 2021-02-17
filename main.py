@@ -5,11 +5,6 @@ import side
 import widgets
 
 
-# TODO: Passar todas as funções pra outro arquivo
-# TODO: Adicionar hotkeys de passar e voltas
-# TODO: Criar os botões para tipos de lista [Diegorpp]
-# TODO: Criar botão de salvar [adenild]
-# TODO: Adicionar campo de ir até x imagem
 def main():
     window = Tk()
     window.title('Não é o Labelme')
@@ -46,7 +41,6 @@ def main():
     button_next.grid(row=1, column=3)
 
     widgets.generate_menubar(window, local_vars)
-
     window.mainloop()
 
 
