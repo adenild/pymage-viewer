@@ -1,8 +1,6 @@
 from tkinter import *
 import tkinter.font as font
-import commands
-import side
-import widgets
+from dependencies import commands, widgets, side
 
 
 def main():
