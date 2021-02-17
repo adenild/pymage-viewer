@@ -7,7 +7,7 @@ import widgets
 
 def main():
     window = Tk()
-    window.title('Não é o Labelme')
+    window.title('Simple Label')
     system_font = font.Font(size=16)
     file = side.select_output_file(True)
     images_dir = side.select_images_dir(True)
