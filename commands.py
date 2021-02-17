@@ -2,6 +2,11 @@ from tkinter import Label, filedialog
 import side
 
 
+def change_window_title(local_vars: list):
+    index, images, window = local_vars[0], local_vars[5], local_vars[-1]
+    window.title(f'Simple Label - {images[index]}')
+
+
 def test_clicked_button():
     print('This button was clicked')
 
@@ -52,6 +57,8 @@ def change_image(next_or_prev: str, local_vars: list):
     label = Label(image=image)
     label.image = image
     label.grid(row=0, column=0, columnspan=3)
+
+    change_window_title(local_vars)
 
     local_vars[0], local_vars[1], local_vars[2], local_vars[3] = index, label, image, total_images
     local_vars[4], local_vars[5], local_vars[6], local_vars[7] = input_box, images, data, file
