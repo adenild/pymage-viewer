@@ -20,7 +20,7 @@ def main():
     index = 0
 
     if total_images == 0:
-        print('Todas as imagens da pasta ja receberam labels')
+        print('Todas as imagens da pasta já receberam labels')
     else:
         print(f"Existem {total_images} imagens.")
 
