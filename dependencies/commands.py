@@ -1,4 +1,4 @@
-from tkinter import Label, filedialog
+from tkinter import Label
 import side
 
 
