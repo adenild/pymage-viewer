@@ -15,7 +15,7 @@ def main():
     images = side.image_loader(images_dir)
     data = side.load_data(file, images)
 
-    labeled_files = side.starter_list(data)
+    labeled_files = side.starter_list(data)  # TODO: Dar um uso para os arquivos que já receberam label
     total_images = len(images)
     index = 0
 
