@@ -1,7 +1,5 @@
-import commands
 from tkinter import *
-
-import side
+from . import side, commands
 
 
 def generate_menubar(window, local_vars: list):

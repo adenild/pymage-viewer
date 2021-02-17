@@ -1,5 +1,5 @@
 from tkinter import Label
-import side
+from . import side
 
 
 def change_window_title(local_vars: list):
