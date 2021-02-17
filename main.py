@@ -7,8 +7,8 @@ def main():
     window = Tk()
     window.title('Simple Label')
     system_font = font.Font(size=16)
-    file = side.select_output_file(True)
-    images_dir = side.select_images_dir(True)
+    file = side.select_output_file()
+    images_dir = side.select_images_dir()
 
     images = side.image_loader(images_dir)
     data = side.load_data(file, images)
@@ -32,7 +32,7 @@ def main():
     input_box.grid(row=1, column=0)
     input_box.insert(0, side.check_labeled(images[index], data))
 
-    local_vars = [index, label, image, total_images, input_box, images, data, file, images_dir]
+    local_vars = [index, label, image, total_images, input_box, images, data, file, images_dir, window]
     button_prev = Button(window, text="Anterior", command=lambda: commands.change_image("prev", local_vars))
     button_prev.grid(row=1, column=2)
     button_next = Button(window, text="Próximo", command=lambda: commands.change_image("next", local_vars))
