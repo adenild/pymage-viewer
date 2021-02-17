@@ -23,7 +23,6 @@ def save_json_file(local_vars: list):
     side.save_data_json(file, data)
 
 
-# TODO: Fazer a validação dos dados
 def change_image(next_or_prev: str, local_vars: list):
     index = local_vars[0]
     label = local_vars[1]
@@ -64,6 +63,3 @@ def change_image(next_or_prev: str, local_vars: list):
     local_vars[4], local_vars[5], local_vars[6], local_vars[7] = input_box, images, data, file
     local_vars[8] = images_dir
     return local_vars
-
-
-
