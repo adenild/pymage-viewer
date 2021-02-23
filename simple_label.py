@@ -216,10 +216,36 @@ class App(Tk):
         self.label_menu.add_command(label="Labelled", command=lambda: self.menu_change_data("2"))
         self.label_menu.add_command(label="Not Labelled", command=lambda: self.menu_change_data("3"))
         self.menu_bar.add_cascade(label="Edit", menu=self.label_menu)
+        self.file_menu.add_separator()
+        self.goto_menu = Menu(self.menu_bar, tearoff=0)
+        self.goto_menu.add_command(label="Index", command=lambda: self.menu_set_index())
+        self.menu_bar.add_cascade(label="Go To", menu=self.goto_menu)
         self.config(menu=self.menu_bar)
 
         # Execução da janela
         self.mainloop()
+
+    def set_index(self):
+        print(f"\033[93mAtualmente você está na posição {self.index+1}")
+        self.index = int(input("Qual o index da imagem que você quer editar?\n\033[96mR: "))-1
+
+    def menu_set_index(self):
+        self.set_index()
+        self.update_image()
+        self.update_input()
+
+    def change_object_dict(self, image_label):
+        if len(self.image_input.get().upper()) > 0:
+            if list(image_label)[0] in self.files_dict["labelled_files"]:
+                return True
+            self.files_dict["labelled_files"].update(image_label)
+            self.files_dict["not_labelled_files"].pop(list(image_label)[0])
+        else:
+            if list(image_label)[0] in self.files_dict["not_labelled_files"]:
+                return True
+            self.files_dict["not_labelled_files"].update(image_label)
+            self.files_dict["labelled_files"].pop(list(image_label)[0])
+        self.files_dict["all_files"].update(image_label)
 
     def change_data(self, selected_list: str = None):
         """
