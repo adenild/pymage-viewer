@@ -198,16 +198,18 @@ class App(Tk):
         self.image_input.insert(0, check_labeled(self.images[self.index], self.data))
 
         # Renderização dos botões
-        self.button_previous = Button(self,font=self.system_font, text="Previous", command=lambda: self.change_image("prev"))
+        self.button_previous = Button(self,
+                                      font=self.system_font, text="Previous", command=lambda: self.change_image("prev"))
         self.button_previous.grid(row=1, column=1, padx=2.5, pady=2.5)
-        self.button_next = Button(self, font=self.system_font, text="Next", command=lambda: self.change_image("next"))
+        self.button_next = Button(self,
+                                  font=self.system_font, text="Next", command=lambda: self.change_image("next"))
         self.button_next.grid(row=1, column=3, padx=2.5, pady=2.5)
 
         # Renderização da barra de menu
         self.menu_bar = Menu(self)
         self.file_menu = Menu(self.menu_bar, tearoff=0)
         self.file_menu.add_command(label="Open", command=lambda: load_data(self.file, self.images, self.total_images))
-        self.file_menu.add_command(label="Save", command=lambda: save_data(self.file, self.data))
+        self.file_menu.add_command(label="Save", command=lambda: self.save())
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", command=self.quit)
         self.menu_bar.add_cascade(label="File", menu=self.file_menu)
@@ -292,14 +294,15 @@ class App(Tk):
         """
         self.title(f"{self.images[self.index]} - Simple Label")
 
-    def save(self):
+    def save(self, image_label=None):
         """
         Mescla o dicionário que o usuário edita com o dicionário com todas as imagens e salva no arquivo
         """
-        save = {self.images[self.index]: {'bbox': "None", 'label': self.image_input.get().upper()}}
-        self.data.update(save)
-        self.raw_data.update(save)
-        print(save)
+        if not image_label:
+            image_label = {self.images[self.index]: {'bbox': "None", 'label': self.image_input.get().upper()}}
+        self.data.update(image_label)
+        self.raw_data.update(image_label)
+        print(image_label)
         save_data(self.file, self.raw_data)
 
     def update_input(self):
@@ -327,7 +330,10 @@ class App(Tk):
         :return:
         """
         print(show_position(self.index, self.total_images))
-        self.save()
+
+        image_label = {self.images[self.index]: {'bbox': "None", 'label': self.image_input.get().upper()}}
+        self.change_object_dict(image_label)
+        self.save(image_label)
 
         if next_or_prev == "next":
             if self.index + 1 == self.total_images:
