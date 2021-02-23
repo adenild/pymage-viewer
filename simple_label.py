@@ -25,7 +25,7 @@ def select_file(debug=False):
     :return: Caminho do arquivo em que os dados serão salvos
     """
     if debug:
-        return "debug/labels.json"
+        return "debug/debug.json"
     return input("Digite o nome do arquivo: ")
 
 
@@ -56,6 +56,7 @@ def save_data(file, data):
     :param file: Arquivo em que serão gravados os dados
     :param data: Dados a serem gravados no arquivo
     """
+    print("Salvando")
     with open(f"{file}", "w") as write_file:
         json.dump(data, write_file, indent=1)
 
@@ -89,6 +90,7 @@ def load_data(file, images_list, total_images):
             if len(data) == 0 or len(data) < total_images:
                 data = populate_json(images_list)
     except:
+        print("Entrei no except do load_data")
         open(f"{file}", 'w+').close()
         data = populate_json(images_list)
     return data
@@ -163,6 +165,7 @@ class App(Tk):
         self.system_font = font.Font(size=13)
 
         # Configuração das variáveis
+        self.debug = True
         self.file = select_file(True)
         self.directory = select_dir(True)
         self.raw_images = image_loader(self.directory)
@@ -314,6 +317,10 @@ class App(Tk):
         self.update_input()
         self.update_image()
         self.change_window_title()
+
+        if self.debug:
+            for dictionary in self.files_dict:
+                print(f"{dictionary}: {self.files_dict[dictionary]}")
 
 
 if __name__ == '__main__':
