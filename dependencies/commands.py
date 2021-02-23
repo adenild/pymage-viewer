@@ -1,10 +1,27 @@
 from tkinter import Label
-import side
+from . import side
 
 
 def change_window_title(local_vars: list):
-    index, images, window = local_vars[0], local_vars[5], local_vars[-1]
+    index, images, window = local_vars[0], local_vars[5], local_vars[9]
     window.title(f'Simple Label - {images[index]}')
+
+
+def toggle_data_list(local_vars: list, desired_list: str):
+    data, labelled, not_labelled = local_vars[6], local_vars[10], local_vars[11]
+    all_images = data
+    print(local_vars[6])
+    if desired_list == 'all':
+        data = all_images
+    elif desired_list == 'labelled':
+        data = labelled
+    elif desired_list == 'not labelled':
+        data = not_labelled
+    else:
+        print("Erro")
+    local_vars[6] = data
+    print(local_vars[6])
+    return local_vars
 
 
 def test_clicked_button():
