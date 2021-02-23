@@ -259,6 +259,8 @@ class App(Tk):
             options = ["Todas as imagens", "Imagens com label", "Imagens sem label"]
             if len(self.files_dict["labelled_files"]) == 0:
                 options.remove("Imagens com label")
+            if len(self.files_dict["not_labelled_files"]) == 0:
+                options.remove("Imagens sem label")
 
             print("\033[93mQual a lista de imagem que você deseja ver?")
             for option in range(len(options)):
